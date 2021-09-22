@@ -23,10 +23,11 @@ def animate(r, time, name):
     plt.title("Time: "+str(time)+" (s)")
     plt.savefig(name)
 
-def images(r, time, img, name):
+def images(r,r1, time, img, name):
     d=r*2
+    d1=r1*2
     fondo = 255*np.ones((820,1200,3),dtype=np.uint8)      #Generamos el fondo blanco 820x1200px
-    img   = cv2.resize(img,None,fx=d,fy=d,interpolation=cv2.INTER_CUBIC) #aplicamos zoom
+    img   = cv2.resize(img,None,fx=r,fy=r,interpolation=cv2.INTER_CUBIC) #aplicamos zoom
     font = cv2.FONT_HERSHEY_SIMPLEX                       #Configuramos fuentes
     cv2.putText(fondo,'Tiempo: '+str(time)+" (s)",(10,30),font,1,(10,10,10),2,cv2.LINE_AA)  #Escribimos el tiempo en la imagen
     x_offset= int(((fondo.shape[1]-img.shape[1])/2))   #Calcular el centro de la imagen
@@ -57,9 +58,9 @@ datos = load("animation.json")      #Leemos el json
 
 gifImage = []                       #Lista que almacenará los frames a animar
 
-for i, diam in enumerate(datos["diametro"][5:95]):
+for i, diam in enumerate(datos["diametro"]):
     try:
-        gifImage.append(images((diam*8.52)/2, datos["time"][i+5], img, "./frameImage/frame"+str(i+1)+".jpg"))
+        gifImage.append(images( (8.52+(diam*8.52))/2 , ((diam*8.52))/2, datos["time"][i], img, "./frameImage/frame"+str(i+1)+".jpg"))
         # gifFrame.append(animate((diam*8.52)/2, datos["time"][i], "./frames/frame"+str(i+1)+".jpg"))
     except:
         None
